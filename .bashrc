@@ -17,4 +17,3 @@ source_dir()
 
 # Process global & local files
 source_dir ~/.bash/
-source_dir ~/.bash.local/
