@@ -1,17 +1,4 @@
 
-
-# ls for Directories.
-function lsd
-{
-    ls -1F $* | grep '/$'
-}
-
-# ls for files - or at least non-directories
-function lsf
-{
-    ls -l $* | grep -E -v '^(d|total)' | awk '{print $NF}'
-}
-
 #
 #  ssh + scp without storing or prompting for keys.
 #
@@ -39,6 +26,54 @@ if [ "$(type -t _ssh)x" = "functionx" ]; then
 fi
 
 
+
+function f() { 
+	find . -iname "*$1*" "${@:2}" 
+}
+function r() {
+	grep "$1" "${@:2}" -R . 
+}
+function mkd() {
+	echo "Creating $*" && mkdir -p "$@" && cd "$@" 
+}
+function show_my_ip() {
+	dig +short myip.opendns.com @resolver1.opendns.com 
+}
+function tre() { 
+	tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX; 
+}
+function trash () { 
+	command mv "$@" ~/.Trash ; 
+}
+function cdfinder() { 
+	cd "$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)')"; 
+}
+function digga() { 
+	dig +nocmd "$1" any +multiline +noall +answer; 
+}
+
+# Determine size of a file or total size of a directory
+function fs() {
+	if du -b /dev/null > /dev/null 2>&1; then
+		local arg=-sbh;
+	else
+		local arg=-sh;
+	fi
+	if [[ -n "$*" ]]; then
+		du $arg -- "$@";
+	else
+		du $arg .[^.]* ./*;
+	fi;
+}
+
+# UTF-8-encode a string of Unicode symbols
+function escape() {
+	printf "\\\x%s" $(printf "$@" | xxd -p -c1 -u);
+	# print a newline unless we’re piping the output to another program
+	if [ -t 1 ]; then
+		echo "";
+	fi;
+}
 
 #
 #  Extract named archive(s).
@@ -103,60 +138,3 @@ screeny ()
 }
 
 
-#
-# Play media found dynamically.  Correctly copes with spaces in files.
-#
-function play
-{
-   player=$*
-   if [  -z "$player" ]; then
-      player="xine --loop=shuffle+"
-   fi
-
-   find . \( -iname '*.avi' -o -iname '*.mkv' -o -iname '*.m4v' -o -iname '*.wmv' -o -iname '*.flv' -o -iname '*.mp4' -o -iname '*.mov' -o -iname '*.mpg' \) -exec $player "{}" +
-
-}
-
-# Open a new firefox instance, with a temporary profile
-function firefox_temp() {
-   dir=$(mktemp -d)
-   echo "Profile directory: ${dir}"
-   firefox --new-instance --profile ${dir}
-   echo "Cleaning up .."
-   rm -rf ${dir}
-
-}
-
-# Generate a four-word pass-phrase
-function passphrase() {
-
-    if [ ! -e /usr/share/dict/words ]; then
-        echo "/usr/share/dict/words is missing"
-        return
-    fi
-
-    # loop forever
-    while true; do
-
-        # Generate the random passphrase.
-        #
-        # Note: Using `shuf -n4 $file` is way faster
-        # than `sort --random-sort $file`.
-        #
-        out=$(shuf -n4 /usr/share/dict/words | tr '\n' ' ')
-
-        #
-        # If the output DOES NOT contain `-` then we show
-        # it, and return.
-        #
-        # Otherwise we rely upon the loop to try again :)
-        #
-        if ( ! echo ${out} | grep -E -- "[-']" 2>/dev/null >/dev/null) ; then
-
-            # convert to lower-case.
-            echo "${out,,}"
-            return
-        fi
-    done
-
-}

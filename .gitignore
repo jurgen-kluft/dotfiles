@@ -7,16 +7,6 @@
 !.bash_logout
 !.bash_profile
 
-# Don't ignore emacs configuration
-!.emacs.d/
-.emacs.d/auto-save-list/
-
-# Don't ignore the MySQL config file
-!.my.cnf
-
-# Don't ignore perltidy file
-!.perltidyrc
-
 # Don't ignore my SSH configuration file
 !.ssh/config
 
@@ -35,9 +25,6 @@
 # Terminal sharing utilities
 !.screenrc
 !.tmux.conf
-
-# ./bin/worklog config file
-!.worklog.conf
 
 # Don't ignore signatures.
 !.sigs/

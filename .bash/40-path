@@ -9,63 +9,44 @@ function add_to_path
    fi
 }
 
-
 #
-# Empty the PATH so we have a known-starting point.
+# 
 #
-export PATH=
-
-#
-# Add on the expected/standard directories.
-#
-add_to_path /bin
-add_to_path /usr/bin
-add_to_path /sbin
-add_to_path /usr/sbin
+add_to_path ~/bin
+add_to_path ~/.local/bin/
 add_to_path /usr/local/bin
-add_to_path /usr/local/sbin
-
-#
-# Some optional directories might exist, and if so they will be added.
-#
-add_to_path /opt/node/bin
-add_to_path /opt/packer
-add_to_path /opt/pass
-add_to_path /opt/sysadmin-util
-add_to_path /opt/vpn
-add_to_path /usr/games
-add_to_path /usr/lib/ccache
-add_to_path /var/lib/gems/1.8/bin
-add_to_path /var/lib/gems/1.9/bin
-
-#
-# We allow a per-user, and a per-user + per-host setup.
-#
-add_to_path ~/bin/
-add_to_path ~/bin-$(hostname --short)
-
+add_to_path /usr/local/mysql/bin
+add_to_path /usr/local/opt/llvm/bin
 
 #
 # Now we have some extra setup for things that might be present.
 #
 
+# 
+# Rust
+# 
+if [ -d $HOME/.cargo/bin ]; then
+
+    # Add the path
+    add_to_path ~/.cargo/bin
+
+fi
 
 #
 # Golang
 #
-if [ -d /opt/go ]; then
+if [ -d $HOME/sdk/go ]; then
 
     # Add the path
-    add_to_path /opt/go/bin
-    add_to_path $HOME/go/bin
+    add_to_path $HOME/sdk/go/bin
+    add_to_path $HOME/dev.go/bin
 
     # go-specific environmental variable setup.
     export GO111MODULE=on
-    export GOPATH=$HOME/go
-    export GOROOT=/opt/go
+    export GOPATH=$HOME/dev.go
+    export GOROOT=$HOME/sdk/go
 
 fi
-
 
 #
 # Ruby Gems
@@ -74,10 +55,6 @@ if [ -d ~/gems/bin ]; then
     export GEM_HOME=~/gems/
     add_to_path $HOME/gems/bin
 fi
-
-
-
-
 
 #
 #  Remove any duplicated entries.

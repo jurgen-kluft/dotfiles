@@ -30,7 +30,3 @@ export HISTFILE=~/.history.d/bash.history
 #
 export LESSHISTFILE=~/.history.d/less.history.$USER
 
-#
-# MySQL
-#
-export MYSQL_HISTFILE=~/.history.d/mysql.history.$USER

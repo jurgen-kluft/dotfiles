@@ -1,31 +1,36 @@
-#
-# Ensure we find ~/bin and the homebrew utilities
-#
-export PATH=/opt/homebrew/bin:$PATH
-export PATH=/opt/homebrew/opt/mysql-client/bin:$PATH
-export PATH=$HOME/Repos/github.com/skx/dotfiles/bin:$PATH
-export PATH=$HOME/go/bin:$PATH
-export PATH=$HOME/bin:$PATH
-
-
-#
-# Setup TAB-completion for ZSH
-#
-if type brew &>/dev/null
-then
-  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
-
-  autoload -Uz compinit
-  compinit
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-#
-# We need to configure the use of plugins for the pass password-manager.
-#
-# specifically I use the OTP plugin for two factor authentication for various services.
-#
-export PASSWORD_STORE_ENABLE_EXTENSIONS=true
-export PASSWORD_STORE_EXTENSIONS_DIR=/usr/local/lib/password-store/extensions
+# ZSH options combined with oh-my-zsh configs
+# See https://github.com/robbyrussell/oh-my-zsh/blob/master/templates/zshrc.zsh-template
+
+# Path to your oh-my-zsh installation.
+export ZSH=~/.oh-my-zsh
+
+# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+# Some I like (but I did not try many): robbyrussell, random, clean, agnoster
+# ZSH_THEME="spaceship"
+ZSH_THEME="powerlevel10k/powerlevel10k"
+
+# Default plugins can be found in ~/.oh-my-zsh/plugins/
+# Custom plugins can be added to $ZSH_CUSTOM/plugins/
+# Homebrew plugins needs to be loaded differently, as it uses another place for storage
+plugins=(git zsh-autosuggestions colored-man-pages colorize brew web-search)
+
+# some more options you can fiddle around with:
+# CASE_SENSITIVE="true"
+# HYPHEN_INSENSITIVE="true"
+# DISABLE_AUTO_UPDATE="true"
+# export UPDATE_ZSH_DAYS=13
+# DISABLE_LS_COLORS="true"
+# DISABLE_AUTO_TITLE="true"
+# ENABLE_CORRECTION="true"
+# COMPLETION_WAITING_DOTS="true"
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 #
 # History control
@@ -39,26 +44,31 @@ setopt HIST_SAVE_NO_DUPS
 setopt SHARE_HISTORY
 setopt appendhistory
 
-#
-# Alias to pipe stuff to less
-#
-#  ls LL
-#
-# And I'm spoiled by the use of 'rgrep' on Debian systems.
-#
-alias -g LL=' |& less'
-alias -g rgrep='grep -R '
+# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+HIST_STAMPS="dd.mm.yyyy"
 
-#
-# If we have a local configuration-file, then load it.
-#
-if [ -e ~/.zshrc.local ] ; then
-    source ~/.zshrc.local
-fi
+# PATH
+# append
+# path+=('~/.emacs.d/bin')
+# or prepend
+# path=('/home/david/pear/bin' $path)
+# export to sub-processes (make it inherited by child processes)
+# export PATH
 
-#
-# Avoid Escape-backspace from deleting the previous token, instead
-# delete components as with bash.
-#
-autoload -U select-word-style
-select-word-style bash
+# I know that oh-my-zsh doesn't like that, but I am not going to keep all settings in multiple files.
+# For now lets live with that solution, maybe I am going to switch to .zshrc completely, but until then just make
+# sure that ~/bash_profile is compatible with zsh
+source ~/.bash_profile
+
+# load the oh-my-zsh environment
+source $ZSH/oh-my-zsh.sh
+
+eval "$(jump shell zsh)"
+eval "$(zoxide init zsh)"
+eval "$(starship init zsh)"
+
+source $HOME/.config/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+___MY_VMOPTIONS_SHELL_FILE="${HOME}/.jetbrains.vmoptions.sh"; if [ -f "${___MY_VMOPTIONS_SHELL_FILE}" ]; then . "${___MY_VMOPTIONS_SHELL_FILE}"; fi

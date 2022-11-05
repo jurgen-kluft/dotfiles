@@ -1,0 +1,28 @@
+# Executed once ONLY during a new login shell
+
+# Defaults
+export TERM=xterm-256color
+export SHELL=/bin/zsh
+
+# Preferred editor for local and remote sessions
+export EDITOR='lvim'
+
+# make sure casks get installed in the right directory
+export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+
+# some very useful path assignments
+export MANPATH="/usr/local/man:/usr/local/mysql/man:/usr/local/git/man:$MANPATH"
+
+# You may need to adjust your language environment
+# export LC_ALL="de_DE.UTF-8"
+export LANG=en_US.UTF-8
+
+# Compilation flags
+if [ $(uname -p) = "arm" ]; then
+    export ARCHFLAGS="-arch aarch64"
+else
+    export ARCHFLAGS="-arch x86_64"
+fi
+
+# set the default user so themes and bash can use it to filter away your username from prompt
+export DEFAULT_USER=$(whoami)

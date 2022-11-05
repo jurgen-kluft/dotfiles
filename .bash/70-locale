@@ -1,9 +1,5 @@
 #
 # My preferred locale
 #
-export LC_ALL=en_US.UTF8
+export LC_ALL=en_US.UTF-8
 
-function testlocale
-{
-    perl -Mcharnames=:full -CS -wle 'print "\N{EURO SIGN}"'
-}

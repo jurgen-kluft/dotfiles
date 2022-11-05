@@ -1,0 +1,7 @@
+
+# 
+# Homebrew, auto update 
+#
+
+export HOMEBREW_AUTO_UPDATE_INTERVAL=180d
+export HOMEBREW_AUTO_UPDATE_ASK=y

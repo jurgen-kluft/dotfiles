@@ -1,56 +1,74 @@
 #
 #  For working with the dotfiles repository
 #
-if [ -d ~/Repos/github.com/skx/dotfiles/ ]; then
-   alias .DOTFILES='git --work-tree=$HOME --git-dir=$HOME/Repos/github.com/skx/dotfiles/.git'
-elif [ -d ~/git/dotfiles.git ]; then
-   alias .DOTFILES='git --work-tree=$HOME --git-dir=$HOME/git/dotfiles.git'
+if [ -d ~/dev.go/src/github.com/jurgen-kluft/dotfiles/ ]; then
+   alias .DOTFILES='git --work-tree=$HOME --git-dir=$HOME/dev.go/src/github.com/jurgen-kluft/dotfiles/.git'
+elif [ -d ~/.config/dotfiles/.git ]; then
+   alias .DOTFILES='git --work-tree=$HOME --git-dir=$HOME/.config/dotfiles/.git'
 else
-   alias .DOTFILES='You have no dotfiles in ~/git/ or ~/Repos/github.com'
+   alias .DOTFILES='You have no dotfiles in ~/.config/dotfiles/ or ~/dev.go/src/github.com'
 fi
 
+# vim
+alias v="lvim"
+alias vim="lvim"
+alias nvim="lvim"
+alias ed=$EDITOR
+alias edit=$EDITOR
 
-#
-# Move up
-#
-alias ..='cd ..'
-
-
-#
-#  For Xine
-#
-if [ -x /usr/bin/xine ]; then
-    alias xine='xine -g --no-logo --no-splash -V=40'
-fi
-
-#
-#  Shuffling media.
-#
-alias xine-shuffle='play "xine -g --no-logo --no-splash --loop=shuffle+"'
-alias totem-shuffle='play totem'
-
-#
-# Prefer our emacs-wrapper to native emacs
-#
-if [ -x ~/bin/e ] ;then
-    alias emacs=e
-fi
-
+# ls
+alias ls="lsd"
+alias l="ls -l --group-directories-first"
+alias ll='ls -l --group-directories-first --reverse --sort=size'
+alias la="ls -l --group-directories-first -a"
+alias ld='ls -l -d'
 
 #
 # Some git aliases
 #
+alias lit="lazygit"
+alias gs="git status"
 alias git-source='git config --get remote.origin.url'
 alias git-top='cd $(git rev-parse --show-toplevel)'
 
+# flush the macos dns cache
+alias dns-fluh="sudo killall -HUP mDNSResponder"
+
+# improve default grep command
+alias grep="grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}"
+
+# Activate screen saver (when going AFK)
+alias afk="open -a ScreenSaverEngine.app"
+
+# pipe my public ssh key to the clipboard
+alias pubkey="more ~/.ssh/id_rsa.pub | pbcopy | echo '=> Public key copied to pasteboard.'"
+
 #
-# The password application lives beneath /opt/pass, which comes from
-# github:
+# Easier directory traversal/navigation
 #
-#   https://github.com/skx/pass/
+alias cd..='cd ../'
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias ~="cd ~"
+alias -- -="cd -"
+alias f='open -a Finder ./'
+
+# display all executable paths
+alias path='echo -e ${PATH//:/\\n}'
+
+# MS-DOS related aliases
+alias cls="clear"
+alias dir="l"
+
+
 #
-# The actual private/encrypted data comes from ~/Private/pass
+# The password application lives beneath /opt/pass, which comes from github:
 #
-if [ -d $HOME/Private/pass ]; then
-    export PASSWORD_STORE_DIR=$HOME/Private/pass
+#   https://github.com/jurgen-kluft/go-pass/
+#
+# The actual private/encrypted data comes from ~/private/pass
+#
+if [ -d $HOME/private/pass ]; then
+    export PASSWORD_STORE_DIR=$HOME/private/pass
 fi
