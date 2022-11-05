@@ -15,6 +15,10 @@
 !.vim/
 .vim/.netrwhist
 
+# curl and wget
+!.curlrc
+!.wgetrc
+
 # Revision control systems
 !.gitconfig
 !.hgrc
